@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="Recommandation">
+
+
+	<start-state name="start-state1">
+		<transition to="Réviser"></transition>
+	</start-state>
+
+
+	<task-node name="Réviser">
+		<transition to="Test"></transition>
+	</task-node>
+
+	<mail-node name="Recommandation">
+		<transition to="Notifier" name="to task-node1"></transition>
+	</mail-node>
+
+	<decision name="Test">
+		<transition to="Recommandation"></transition>
+		<transition to="Doc_success" name="to node1"></transition>
+	</decision>
+
+	<task-node name="Notifier">
+		<transition to="Accusé de réception"></transition>
+	</task-node>
+
+	<mail-node name="Accusé de réception">
+		<transition to="end-state1"></transition>
+	</mail-node>
+
+	<node name="Doc_success">
+		<transition to="end-state2"></transition>
+	</node>
+
+
+	<end-state name="end-state1"></end-state>
+
+	<end-state name="end-state2"></end-state>
+
+
+</process-definition>

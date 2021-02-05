@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installations>
+<installation location="/home/openkm/Development/workspace/openkm" name="Jboss-jBP-M" version="jBPM3"/>
+</installations>

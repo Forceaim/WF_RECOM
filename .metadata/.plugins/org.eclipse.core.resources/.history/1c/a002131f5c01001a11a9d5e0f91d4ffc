@@ -1,0 +1,483 @@
+/**
+ * Copyright (c) 2006-2017  Paco Avila & Josep Llort
+ * <p>
+ * No bytes were intentionally harmed during the development of this application.
+ * <p>
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+package com.openkm.frontend.client.widget.upload;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
+import com.openkm.frontend.client.Main;
+import com.openkm.frontend.client.constants.service.RPCService;
+import com.openkm.frontend.client.util.OKMBundleResources;
+import com.openkm.frontend.client.util.Util;
+import com.openkm.frontend.client.widget.searchin.CalendarWidget;
+import com.openkm.frontend.client.widget.searchin.SearchNormal;
+
+
+/**
+ * FileUploadForm
+ *
+ * @author jllort
+ *
+ */
+public class FileUploadForm extends Composite {
+
+	private FormPanel uploadForm;
+	private VerticalPanel vPanel;
+	private TextBox inputPath;
+	private TextBox inputAction;
+	private TextBox inputRenameDocument;
+	private CheckBox notifyToUser;
+	private CheckBox importZip;
+	private TextArea versionComment;
+	private TextBox mails;
+	private TextBox users;
+	private TextBox roles;
+	private FileUpload fileUpload;
+	private TextArea message;
+	private TextBox increaseVersion;
+	private FlexTable table;
+	
+	//Tina
+	//ajout type de rapport et calendrier
+	private static final int CALENDAR_FIRED_NONE = -1;
+	private static final int CALENDAR_FIRED_START = 0;
+	private ListBox rapportType;
+	private CalendarWidget calendar;
+	private TextBox periode;
+	public Image startCalendarIcon;
+	public int calendarFired = CALENDAR_FIRED_NONE;
+	public Date modifyDateFrom;
+	public PopupPanel calendarPopup;
+	private TextBox valueOfType;
+	private HorizontalPanel hPanel;
+	private HorizontalPanel hPanel1;
+	private HorizontalPanel hPanel2;
+	private HorizontalPanel hPanel3;
+	private Label ReportType;
+	/**
+	 * FileUploadForm
+	 */
+	public FileUploadForm(FileUpload fileUpload, String size) {
+		this.fileUpload = fileUpload;
+		fileUpload.setStyleName("okm-Input");
+		fileUpload.getElement().setAttribute("size", size);
+		// Set the name of the upload file form element
+		fileUpload.setName("uploadFormElement");
+
+		uploadForm = new FormPanel();
+		vPanel = new VerticalPanel();
+		inputPath = new TextBox();
+		inputAction = new TextBox();
+		inputRenameDocument = new TextBox();
+		notifyToUser = new CheckBox();
+		importZip = new CheckBox();
+		versionComment = new TextArea();
+		mails = new TextBox();
+		users = new TextBox();
+		roles = new TextBox();
+		message = new TextArea();
+		increaseVersion = new TextBox();
+		
+		//Tina 
+		//instanciation list type rapport et calendar
+		rapportType = new ListBox();
+		calendar = new CalendarWidget();
+		periode = new TextBox();
+		startCalendarIcon = new Image(OKMBundleResources.INSTANCE.calendar());
+		valueOfType = new TextBox();
+		hPanel = new HorizontalPanel();
+		
+		calendarPopup = new PopupPanel(true);
+
+		// Set Form details
+		// Set the action to call on submit
+		uploadForm.setAction(RPCService.FileUploadService);
+		// Set the form encoding to multipart to indicate a file upload
+		uploadForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+		// Set the method to Post
+		uploadForm.setMethod(FormPanel.METHOD_POST);
+
+		inputPath.setName("path");
+		inputPath.setVisible(false);
+		vPanel.add(inputPath);
+
+		inputAction.setName("action");
+		inputAction.setVisible(false);
+		vPanel.add(inputAction);
+
+		//TIna
+		//setvisible mis a TRUE
+		inputRenameDocument.setName("rename");
+		inputRenameDocument.setVisible(false);
+		vPanel.add(inputRenameDocument);
+		
+		table = new FlexTable();
+		
+
+		
+		//Tina
+		//ajout checkbox type rapport
+		int count = 0;
+		
+		//ReportType = new Label();
+		//ReportType.setText(Main.i18n("fileupload.label.reportType"+":"));
+		//ReportType.setVisible(true);
+		hPanel.add(new HTML("<b>" + Main.i18n("fileupload.label.reportType") +":"));
+		
+		hPanel.setStyleName("okm-Nowrap");
+		//hPanel.add(ReportType);		
+		hPanel.add(Util.hSpace("5px"));
+		hPanel.add(rapportType);
+		
+		rapportType.setName("typeRapport"); 
+		rapportType.setStyleName("okm-Select");
+		rapportType.addItem(Main.i18n("document.monthlyReport"));
+		rapportType.addItem(Main.i18n("document.quarterlyReport"));
+		rapportType.addItem(Main.i18n("document.annualReport"));
+		
+		
+		rapportType.setSelectedIndex(count);
+		
+		rapportType.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				// each time list is changed must clean folder
+				//Main.get().mainPanel.search.searchBrowser.searchIn.searchAdvanced.path.setText("");
+				valueOfType.setText(rapportType.getSelectedItemText());
+			}
+		});
+		
+		//rapportType.setItemText(1, "text");
+		//rapportType.setValue(0, "rapport mensuel");
+		
+		//vPanel.add(rapportType);
+		hPanel1 = new HorizontalPanel();
+		hPanel1.add(new HTML("<br>"));
+		vPanel.add(hPanel);
+		
+		vPanel.add(hPanel1);
+		
+		rapportType.setWidth("130px");
+		
+		//Tina
+		//ajout calendrier
+		periode.setName("periode");
+		DateTimeFormat dtf = DateTimeFormat.getFormat(Main.i18n("general.day.pattern"));
+		periode.setText(dtf.format(calendar.getDate()));
+		vPanel.add(periode);
+		
+		hPanel2 = new HorizontalPanel();
+		hPanel2.add(new HTML("<b>" + Main.i18n("fileupload.label.period") +":"));
+		hPanel2.add(Util.hSpace("20px"));
+		hPanel2.add(periode);
+		vPanel.add(hPanel2);
+		
+		hPanel3 = new HorizontalPanel();
+		hPanel3.add(new HTML("<br>"));
+		vPanel.add(hPanel3);
+		
+		
+		calendarPopup.setWidget(calendar);
+		
+		calendar.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				calendarPopup.hide();	
+
+				switch (calendarFired) {
+					case CALENDAR_FIRED_START:
+						DateTimeFormat dtf = DateTimeFormat.getFormat(Main.i18n("general.day.pattern"));
+						periode.setText(dtf.format(calendar.getDate()));
+						modifyDateFrom = (Date) calendar.getDate().clone();
+						break;
+				}
+
+				calendarFired = CALENDAR_FIRED_NONE;
+				Main.get().mainPanel.search.searchBrowser.searchIn.searchControl.evaluateSearchButtonVisible();
+			}
+		});
+		
+		periode.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				calendarFired = CALENDAR_FIRED_START;
+				if (modifyDateFrom != null) {
+					calendar.setNow((Date) modifyDateFrom.clone());
+				} else {
+					calendar.setNow(null);
+				}
+				calendarPopup.setPopupPosition(periode.getAbsoluteLeft(), periode.getAbsoluteTop() - 2);
+				calendarPopup.show();
+			}
+		});		
+		
+		valueOfType.setName("a");
+		valueOfType.setVisible(false);
+		vPanel.add(valueOfType);
+
+//		
+//		startCalendarIcon = new Image(OKMBundleResources.INSTANCE.calendar());
+//		startCalendarIcon.addClickHandler(new ClickHandler() {
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				calendarFired = CALENDAR_FIRED_START;
+//				if (modifyDateFrom != null) {
+//					calendar.setNow((Date) modifyDateFrom.clone());
+//				} else {
+//					calendar.setNow(null);
+//				}
+//				calendarPopup.setPopupPosition(startCalendarIcon.getAbsoluteLeft(), startCalendarIcon.getAbsoluteTop() - 2);
+//				calendarPopup.show();
+//			}
+//		});
+//		
+//		startCalendarIcon.setStyleName("okm-Hyperlink");
+//
+//		vPanel.add(startCalendarIcon);
+		
+		
+		notifyToUser.setName("notify");
+		notifyToUser.setVisible(false);
+		vPanel.add(notifyToUser);
+
+		importZip.setName("importZip");
+		importZip.setVisible(false);
+		vPanel.add(importZip);
+
+		versionComment.setName("comment");
+		versionComment.setVisible(false);
+		vPanel.add(versionComment);
+
+		mails.setName("mails");
+		mails.setVisible(false);
+		vPanel.add(mails);
+
+		users.setName("users");
+		users.setVisible(false);
+		vPanel.add(users);
+
+		roles.setName("roles");
+		roles.setVisible(false);
+		vPanel.add(roles);
+
+		message.setName("message");
+		message.setVisible(false);
+		vPanel.add(message);
+
+		increaseVersion.setName("increaseVersion");
+		increaseVersion.setText("0");
+		increaseVersion.setVisible(false);
+		vPanel.add(increaseVersion);
+
+		vPanel.add(fileUpload);
+
+		uploadForm.setWidget(vPanel);
+
+		initWidget(uploadForm);
+	}
+	
+
+	/**
+	 * addSubmitCompleteHandler
+	 *
+	 * @param submitCompleHandler
+	 */
+	public void addSubmitCompleteHandler(SubmitCompleteHandler submitCompleHandler) {
+		uploadForm.addSubmitCompleteHandler(submitCompleHandler);
+	}
+
+	/**
+	 * setEncoding
+	 *
+	 * @param encoding
+	 */
+	public void setEncoding(String encodingType) {
+		uploadForm.setEncoding(encodingType);
+	}
+
+	/**
+	 * Set the path
+	 * @param path String path
+	 */
+	public void setPath(String path) {
+		inputPath.setText(path);
+	}
+
+	/**
+	 * setAction
+	 *
+	 * @param action
+	 */
+	public void setAction(String action) {
+		inputAction.setText(action);
+	}
+
+	/**
+	 * setRename
+	 *
+	 * @param rename
+	 */
+	public void setRename(String rename) {
+		//if (rename != null && !rename.equals("")) {
+			//inputRenameDocument.setText(rename);
+			//String NewName =fileUpload.getFilename()+"_"+rapportType.getSelectedItemText()+"_"+periode.getText();
+			String fileName = fileUpload.getFilename();
+			//String [] fileArray = fileName.split("");
+			char[] NameArray = fileName.toCharArray();
+			String Name = "";
+			String Extension="";
+			String CompleteName = "";
+			int ln = fileName.length();
+			int pos = fileName.indexOf('.');
+			for (int i=0; i<pos; i++){
+				Name = Name+NameArray[i];
+			}
+			for(int j=pos; j<ln; j++){
+				Extension = Extension+NameArray[j];
+			}
+			CompleteName = Name+"_"+rapportType.getSelectedItemText()+"_"+periode.getText()+Extension;
+
+			inputRenameDocument.setText(CompleteName);
+		//}
+	}
+
+	/**
+	 * setTypeRapport
+	 *
+	 * @param TypeRapport
+	 */
+	/*public void setTypeRapport(String[] type){
+		for (int i=0; i<type.length; i++)
+		{
+			rapportType.setItemText(i, type[i]);
+		}
+		/*rapportType.setItemText(0, "rapport mensuel");
+		rapportType.setItemText(1, "rapport trimestriel");
+		rapportType.setItemText(2, "rapport annuel");*/
+	/*}*/
+	
+	/**
+	 * setNotifyToUser
+	 *
+	 * @param value
+	 */
+	public void setNotifyToUser(boolean value) {
+		notifyToUser.setValue(value);
+	}
+
+	/**
+	 * isNotifyToUser
+	 *
+	 * @return
+	 */
+	public boolean isNotifyToUser() {
+		return notifyToUser.getValue();
+	}
+
+	/**
+	 * setImportZip
+	 *
+	 * @param value
+	 */
+	public void setImportZip(boolean value) {
+		importZip.setValue(value);
+	}
+
+	/**
+	 * isImportZip
+	 *
+	 * @return
+	 */
+	public boolean isImportZip() {
+		return importZip.getValue();
+	}
+
+	/**
+	 * setVersionCommnent
+	 *
+	 * @param comment
+	 */
+	public void setVersionCommnent(String comment) {
+		versionComment.setText(comment);
+	}
+
+	/**
+	 * setMails
+	 *
+	 * @param mails
+	 */
+	public void setMails(String mails) {
+		this.mails.setText(mails);
+	}
+
+	/**
+	 * setUsers
+	 *
+	 * @param users
+	 */
+	public void setUsers(String users) {
+		this.users.setText(users);
+	}
+
+	/**
+	 * setRoles
+	 *
+	 * @param roles
+	 */
+	public void setRoles(String roles) {
+		this.roles.setText(roles);
+	}
+
+	/**
+	 * setMessage
+	 *
+	 * @param message
+	 */
+	public void setMessage(String message) {
+		this.message.setText(message);
+	}
+
+	/**
+	 * setIncreaseMajorVersion
+	 */
+	public void setIncreaseVersion(int increaseVersion) {
+		this.increaseVersion.setText(String.valueOf(increaseVersion));
+	}
+
+	/**
+	 * getFileName
+	 *
+	 * @return
+	 */
+	public String getFileName() {
+		return fileUpload.getFilename();
+	}
+
+	public void submit() {
+		uploadForm.submit();
+	}
+}

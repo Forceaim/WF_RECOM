@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<servers>
+  <server auto-publish-setting="1" auto-publish-time="1" configuration-id="/Servers/Tomcat v8.5-config" deployDir="/home/openkm/Development/tomcat-8.5.24/webapps" hostname="localhost" id="Tomcat v8.5" name="Tomcat v8.5" runtime-id="Tomcat v8.5" server-type="org.eclipse.jst.server.tomcat.85" server-type-id="org.eclipse.jst.server.tomcat.85" start-timeout="256" stop-timeout="128" testEnvironment="false" timestamp="2"/>
+</servers>

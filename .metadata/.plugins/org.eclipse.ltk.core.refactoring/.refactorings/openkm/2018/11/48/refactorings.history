@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;openkm/target/OpenKM/css/chosen.css&apos; to &apos;chosenX.css&apos;" description="Rename resource &apos;chosen.css&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="target/OpenKM/css/chosen.css" name="chosenX.css" stamp="1543497363013" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;openkm/target/OpenKM/css/chosenX.css&apos; to &apos;chosen.css&apos;" description="Rename resource &apos;chosenX.css&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="target/OpenKM/css/chosenX.css" name="chosen.css" stamp="1543497393589" updateReferences="true"/>
+</session>

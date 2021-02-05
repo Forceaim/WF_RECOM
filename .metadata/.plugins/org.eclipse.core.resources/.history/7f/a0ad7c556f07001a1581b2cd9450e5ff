@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="DepotRapport3" width="1267" height="469">
+  <node name="Debut" x="413" y="11" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Depot du rapport(SFD)" x="387" y="78" width="177" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Traitement du rapport(ARSM)" x="371" y="229" width="216" height="36">
+    <edge>
+      <label x="-54" y="-16"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Validation du rapport (SE)" x="258" y="429" width="187" height="36">
+    <edge>
+      <label x="-22" y="-18"/>
+    </edge>
+  </node>
+  <node name="mailNonConformToAdmin" x="509" y="337" width="187" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="139" h1="-110" w2="266" h2="149"/>
+      <bendpoint w1="132" h1="-247" w2="259" h2="12"/>
+    </edge>
+  </node>
+  <node name="mailDepotToAdmin" x="407" y="157" width="151" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="mailConformToAdmin" x="278" y="335" width="154" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="mailValide" x="532" y="432" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Fin" x="757" y="430" width="132" height="36"/>
+  <deployment serverName="localhost" serverPort="8080" serverDeployer="/OpenKM/workflow-register">
+    <additionalFiles>
+      <element value="/DepotRapportWorkflow3/src/main/jpdl/forms.xml"/>
+    </additionalFiles>
+  </deployment>
+</root-container>

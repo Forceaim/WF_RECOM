@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="Recommandation" width="1289" height="459">
+  <node name="start-state1" x="207" y="81" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Réviser" x="491" y="85" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Recommandation" x="766" y="213" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-4" h1="118" w2="117" h2="-2"/>
+    </edge>
+  </node>
+  <node name="end-state1" x="203" y="213" width="132" height="36"/>
+  <node name="decision1" x="764" y="89" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="task-node1" x="645" y="333" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-166" h1="-1" w2="-3" h2="115"/>
+    </edge>
+  </node>
+  <node name="mail-node1" x="482" y="217" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="node1" x="1042" y="89" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="end-state2" x="1037" y="315" width="132" height="36"/>
+</root-container>

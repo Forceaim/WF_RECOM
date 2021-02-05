@@ -1,0 +1,430 @@
+/**
+ * HACK TO MAKE IT WORK
+ */
+
+package com.openkm.dao;
+
+import com.openkm.core.*;
+import com.openkm.dao.bean.*;
+import org.hibernate.*;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.util.*;
+
+public class DelayDAO {
+	private static Logger log = LoggerFactory.getLogger(DelayDAO.class);
+	private static DelayDAO single = new DelayDAO();
+
+	private DelayDAO() {
+	}
+
+	public static DelayDAO getInstance() {
+		return single;
+	}
+
+	/**
+	 * Create delay
+	 */
+	public static Delay create(String sfdname, Calendar time, char reportType, int reminder, Calendar time2, String Periode) throws 
+			DatabaseException, IOException {
+		log.debug("create({}, {}, {}, {}, {})", sfdname, time, reportType, reminder, time2);
+		Session session = null;
+		Transaction tx = null;
+		Delay newDelay = new Delay();
+
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+
+			// Create first document version
+			newDelay.setSfdname(sfdname);
+			newDelay.setLimit(time);
+			newDelay.setReportType(reportType);
+			newDelay.setReminder(reminder);
+			newDelay.setReminderDate(time2);
+			newDelay.setPeriode(Periode);
+			
+			session.save(newDelay);
+			HibernateUtil.commit(tx);
+
+			log.debug("create: {}", newDelay);
+			return newDelay;
+		} catch (HibernateException e) {
+			HibernateUtil.rollback(tx);
+			throw new DatabaseException(e.getMessage(), e);
+		} finally {
+			HibernateUtil.close(session);
+		}
+	}
+
+	/**
+	 * Update delay
+	 */
+	public static void update(Calendar deposit, String docname, String sfdname, String periode, char reportType) throws 
+			DatabaseException, IOException {
+		log.debug("create({}, {}, {})", deposit, docname, sfdname, periode, reportType);
+
+		String qs = "update Delay d set d.deposit=:deposit,d.docname=:docname where d.sfdname=:sfdname and d.periode=:periode and d.reportType=:reportType";
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+			Query q = session.createQuery(qs);
+			q.setCalendar("deposit", deposit);
+			q.setString("docname", docname);
+			q.setString("sfdname", sfdname);
+			q.setString("periode", periode);
+			q.setCharacter("reportType", reportType);
+			q.executeUpdate();
+			HibernateUtil.commit(tx);
+
+		} catch (HibernateException e) {
+			HibernateUtil.rollback(tx);
+			throw new DatabaseException(e.getMessage(), e);
+		} finally {
+			log.info("ato anaty update");
+			log.info(sfdname);
+			log.info(periode);
+			log.info(Character.toString(reportType));
+			log.info(docname);
+			HibernateUtil.close(session);
+		}
+	}
+	
+	/**
+	 * Find all delayed
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Delay> findAllDelayed(boolean delayed) throws DatabaseException {
+		log.debug("findAllDelayed({})", delayed);
+		if (delayed) {
+			String qs = "from Delay d where d.deposit is not null and (datediff(d.deposit, d.limit))>=0 order by d.limit";
+			Session session = null;
+
+			try {
+				session = HibernateUtil.getSessionFactory().openSession();
+				Query q = session.createQuery(qs);
+				List<Delay> ret = q.list();
+				log.debug("findAllDelayed: {}", ret);
+				return ret;
+			} catch (HibernateException e) {
+				throw new DatabaseException(e.getMessage(), e);
+			} finally {
+				HibernateUtil.close(session);
+			}
+		}
+		else {
+			String qs = "from Delay d where d.deposit is not null and (datediff(d.deposit, d.limit))<0 order by d.limit";
+			Session session = null;
+
+			try {
+				session = HibernateUtil.getSessionFactory().openSession();
+				Query q = session.createQuery(qs);
+				List<Delay> ret = q.list();
+				log.debug("findAllDelayed: {}", ret);
+				return ret;
+			} catch (HibernateException e) {
+				throw new DatabaseException(e.getMessage(), e);
+			} finally {
+				HibernateUtil.close(session);
+			}
+		}
+		
+	}
+
+	/**
+	 * Find delays between two dates
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Delay> findByDate(Calendar begin, Calendar end, boolean delayed) throws DatabaseException {
+		log.debug("findByDate({},{},{})", begin, end);
+		if (delayed) {
+			String qs = "from Delay d where d.deposit is not null and (datediff(d.deposit, d.limit))>=0 and d.limit between :begin and :end";
+			Session session = null;
+
+			try {
+				session = HibernateUtil.getSessionFactory().openSession();
+				Query q = session.createQuery(qs);
+				q.setCalendar("begin", begin);
+				q.setCalendar("end", end);
+				List <Delay> ret = q.list();
+				log.debug("findByDate: {}", ret);
+				return ret;
+			} catch (HibernateException e) {
+				throw new DatabaseException(e.getMessage(), e);
+			} finally {
+				HibernateUtil.close(session);
+			}
+		}
+		else{
+			String qs = "from Delay d where d.deposit is not null and (datediff(d.deposit, d.limit))<0 and d.limit between :begin and :end";
+			Session session = null;
+
+			try {
+				session = HibernateUtil.getSessionFactory().openSession();
+				Query q = session.createQuery(qs);
+				q.setCalendar("begin", begin);
+				q.setCalendar("end", end);
+				List <Delay> ret = q.list();
+				log.debug("findByDate: {}", ret);
+				return ret;
+			} catch (HibernateException e) {
+				throw new DatabaseException(e.getMessage(), e);
+			} finally {
+				HibernateUtil.close(session);
+			}
+		}
+	}
+	
+	/**
+	 * Find all delayed by report type
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Delay> findByRT(boolean delayed, char type) throws DatabaseException {
+		log.debug("findByRT({})", delayed);
+		if (delayed) {
+			String qs = "from Delay d where d.deposit is not null and (datediff(d.deposit, d.limit))>=0 and d.reportType=:type order by d.limit";
+			Session session = null;
+
+			try {
+				session = HibernateUtil.getSessionFactory().openSession();
+				Query q = session.createQuery(qs);
+				q.setCharacter("type", type);
+				List<Delay> ret = q.list();
+				log.debug("findByRT: {}", ret);
+				return ret;
+			} catch (HibernateException e) {
+				throw new DatabaseException(e.getMessage(), e);
+			} finally {
+				HibernateUtil.close(session);
+			}
+		}
+		else {
+			String qs = "from Delay d where d.deposit is not null and (datediff(d.deposit, d.limit))>=0 and d.reportType=:type order by d.limit";
+			Session session = null;
+
+			try {
+				session = HibernateUtil.getSessionFactory().openSession();
+				Query q = session.createQuery(qs);
+				q.setCharacter("type", type);
+				List<Delay> ret = q.list();
+				log.debug("findByRT: {}", ret);
+				return ret;
+			} catch (HibernateException e) {
+				throw new DatabaseException(e.getMessage(), e);
+			} finally {
+				HibernateUtil.close(session);
+			}
+		}
+		
+	}
+	
+	/**
+	 * Find all delayed by SFD name
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Delay> findBySfd(String sfdname) throws DatabaseException {
+		log.debug("findBySfd({})", sfdname);
+		String qs = "from Delay d where d.deposit is not null and (datediff(d.deposit, d.limit))>=0 and d.sfdname=:sfdname order by d.limit";
+		Session session = null;
+
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			Query q = session.createQuery(qs);
+			q.setString("sfdname", sfdname);
+			List<Delay> ret = q.list();
+			log.debug("findBySfd: {}", ret);
+			return ret;
+		} catch (HibernateException e) {
+			throw new DatabaseException(e.getMessage(), e);
+		} finally {
+			HibernateUtil.close(session);
+		}
+	}
+
+	/**
+	 * Find all delayed by reminder and report type
+	 */
+	@SuppressWarnings("unchecked")
+	public List<User> findByReminderAndRT(String reportType) throws DatabaseException {
+		log.debug("findByReminderAndRT({})", reportType);
+		//String qs = "from Delay d where d.delay>0 and d.sfdname=:sfdname order by d.limit";
+		String qs = "from User u where u.sfdname in (select sfdname from Delay d where d.deposit is null and d.reportType=:reportType and (select datediff(d.reminderDate, now())=0))";
+		//String qs = "select u from User u where u.sfdname in (select sfdname from Delay d where d.deposit is null and d.reportType=:reportType and (select datediff(d.reminderDate, now())=0))";
+		Session session = null;
+
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			Query q = session.createQuery(qs);
+			q.setString("reportType", reportType);
+			List<User> ret = q.list();
+			log.debug("findByReminderAndRT: {}", ret);
+			return ret;
+		} catch (HibernateException e) {
+			throw new DatabaseException(e.getMessage(), e);
+		} finally {
+			HibernateUtil.close(session);
+		}
+	}
+	
+	public Calendar createDateReminder(Calendar limit, int reminder) throws DatabaseException {
+		log.debug("createDateReminder({}, {})", limit, reminder);
+		String qs = "select date_add(:limit, interval -1-:reminder day)";
+		Session session = null;
+
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			Query q = session.createQuery(qs);
+			q.setDate("limit", limit);
+			q.setInteger("reminder", reminder);
+			Calendar ret = (Calendar) q.setMaxResults(1).uniqueResult();
+			log.debug("createDateReminder: {}", ret);
+			return ret;
+		} catch (HibernateException e) {
+			throw new DatabaseException(e.getMessage(), e);
+		} finally {
+			HibernateUtil.close(session);
+		}
+	}
+
+	public static int checkDelayed(String sfdname, String docname) throws DatabaseException {
+		log.debug("checkDelayed({}, {})", sfdname, docname);
+
+		String qs = "select (datediff(deposit, limit)) from Delay d where d.deposit is not null and d.sfdname=:sfdname and d.docname=:docname";
+		Session session = null;
+
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			Query q = session.createQuery(qs);
+			q.setString("sfdname", sfdname);
+			q.setString("docname", docname);
+			log.info(sfdname);
+			log.info(docname);
+			int ret = (int) q.setMaxResults(1).uniqueResult();
+			log.debug("checkDelayed: {}", ret);
+			return ret;
+		} catch (HibernateException e) {
+			throw new DatabaseException(e.getMessage(), e);
+		} finally {
+			HibernateUtil.close(session);
+			log.info("vita ny checkdelayed");
+		}
+	}
+
+	/**
+	 * 
+	 * @param sfdname
+	 * @return
+	 * @throws DatabaseException
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Delay2> checkReminderDays(String sfdname) throws DatabaseException {
+		log.debug("checkReminderDays({})", sfdname);
+
+		//String qs = "select sfdname,reportType,(case when reportType='A' then year(date_add(limit, interval -7 month)) else month(date_add(limit, interval -2 month)) end),datediff(max(limit), date_add(now(), interval 1 day)) from Delay where sfdname=:sfdname and deposit is null and (datediff(limit, now()) between 1 and reminder+1) group by reportType,limit,sfdname";
+		String qs = "select DEL_SFDNAME,DEL_REPORT_TYPE,(case when DEL_REPORT_TYPE = 'A' then year(date_add(DEL_LIMIT, interval -7 month)) else month(date_add(DEL_LIMIT, interval -2 month)) end),datediff(now(),DEL_LIMIT) from OKM_DELAY where DEL_DEPOSIT is NULL and DEL_SFDNAME=:sfdname and datediff(now(),DEL_LIMIT) between 1 and DEL_REMINDER+1";
+		Session session = null;
+
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			//Query q = session.createQuery(qs);
+			SQLQuery q = session.createSQLQuery(qs);
+			q.setString("sfdname", sfdname);
+			//int ret = (int) q.setMaxResults(1).uniqueResult();
+			List<Delay2> ret = q.list();
+			log.debug("checkReminderDays: {}", ret);
+			return ret;
+		} catch (HibernateException e) {
+			throw new DatabaseException(e.getMessage(), e);
+		} finally {
+			HibernateUtil.close(session);
+		}
+	}
+
+	/**
+	 * Get all Delay
+	 * @return
+	 * @throws DatabaseException
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Delay2> findAllDelayed2() throws DatabaseException {
+		log.debug("checkDelayed()");
+
+		//String qs = "select sfdname,reportType,(case when reportType='A' then year(date_add(limit, interval -7 month)) else month(date_add(limit, interval -2 month)) end),datediff(max(limit), date_add(now(), interval 1 day)) from Delay where datediff(now(),limit)>0";
+		String qs = "select DEL_SFDNAME,DEL_REPORT_TYPE,(case when DEL_REPORT_TYPE = 'A' then year(date_add(DEL_LIMIT, interval -7 month)) else month(date_add(DEL_LIMIT, interval -2 month)) end),datediff(now(),DEL_LIMIT) from OKM_DELAY where datediff(now(),DEL_LIMIT)>0 and DEL_DEPOSIT is NULL";
+		Session session = null;
+
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			SQLQuery q = session.createSQLQuery(qs);
+			List<Delay2> ret = q.list();
+			log.debug("checkDelayed: {}", ret);
+			return ret;
+		} catch (HibernateException e) {
+			throw new DatabaseException(e.getMessage(), e);
+		} finally {
+			HibernateUtil.close(session);
+		}
+	}
+	
+	/**
+	 * Get all Delay for SFD name
+	 * @return
+	 * @throws DatabaseException
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Delay2> findAllDelayed2(String sfdname) throws DatabaseException {
+		log.debug("checkDelayed()");
+
+		//String qs = "select sfdname,reportType,(case when reportType='A' then year(date_add(limit, interval -7 month)) else month(date_add(limit, interval -2 month)) end),datediff(max(limit), date_add(now(), interval 1 day)) from Delay where datediff(now(),limit)>0 and sfdname=:sfdname";
+		String qs = "select DEL_SFDNAME,DEL_REPORT_TYPE,(case when DEL_REPORT_TYPE = 'A' then year(date_add(DEL_LIMIT, interval -7 month)) else month(date_add(DEL_LIMIT, interval -2 month)) end),datediff(now(),DEL_LIMIT) from OKM_DELAY where DEL_DEPOSIT is NULL and DEL_SFDNAME=:sfdname datediff(now(),DEL_LIMIT)>0";
+		Session session = null;
+
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			SQLQuery q = session.createSQLQuery(qs);
+			q.setString("sfdname", sfdname);
+			List<Delay2> ret = q.list();
+			log.debug("checkDelayed: {}", ret);
+			return ret;
+		} catch (HibernateException e) {
+			throw new DatabaseException(e.getMessage(), e);
+		} finally {
+			HibernateUtil.close(session);
+		}
+	}
+	
+		   /**
+	  * Char to String converter for SFD Type
+		 * @throws DatabaseException 
+	  */
+	
+	public static char findTypeReport(String sfdname, String docname,String periode) throws DatabaseException {
+		log.debug("checkDelayed({}, {})", sfdname, docname);
+
+		String qs = "select distinct d.reportType from Delay d where d.sfdname=:sfdname and d.docname=:docname and d.periode=:periode";
+		Session session = null;
+
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			Query q = session.createQuery(qs);
+			q.setString("sfdname", sfdname);
+			q.setString("docname", docname);
+			q.setString("periode",periode);
+			char ret = (char) q.setMaxResults(1).uniqueResult();
+			log.debug("checkDelayed: {}", ret);
+			return ret;
+		} catch (HibernateException e) {
+			throw new DatabaseException(e.getMessage(), e);
+		} finally {
+			HibernateUtil.close(session);
+		}
+	}
+
+}
+

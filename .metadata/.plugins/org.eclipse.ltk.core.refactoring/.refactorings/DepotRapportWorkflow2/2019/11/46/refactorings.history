@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;DepotRapportWorkflow2/src/main/java/com/sample/action/RefusedDocument.java&apos; to &apos;RefusedDocumentHandler.java&apos;" description="Rename resource &apos;RefusedDocument.java&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/java/com/sample/action/RefusedDocument.java" name="RefusedDocumentHandler.java" stamp="1573549088431" updateReferences="true"/>
+</session>

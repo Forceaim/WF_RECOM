@@ -1,0 +1,105 @@
+/**
+ * HACK TO MAKE IT WORK
+ */
+
+package com.openkm.dao.bean;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.*;
+
+import javax.persistence.*;
+import java.util.Calendar;
+
+@Entity
+@Indexed
+@Table(name = "OKM_DELAY")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Delay2 {
+	private String sfdname;
+	private char reportType;
+	private int periodOfReport;
+	private int days;
+	
+	public String getSfdname() {
+		return sfdname;
+	}
+	
+	public void setSfdname(String sfdname) {
+		this.sfdname = sfdname;
+	}
+	
+	public char getReportType() {
+		return reportType;
+	}
+	
+	public void setReportType(char reportType) {
+		this.reportType = reportType;
+	}
+	
+	public int getPeriodOfReport() {
+        return periodOfReport;
+	}
+
+	public void setPeriodOfReport(int periodOfReport) {
+	        this.periodOfReport = periodOfReport;
+	}
+
+	public int getDays() {
+        return days;
+	}
+
+	public void setDays(int days) {
+	        this.days = days;
+	}
+	
+	public String periodConversion (int month) {
+		if (month==1) {
+			return "calendar.month.january";
+		} else if (month==2) {
+			return "calendar.month.february";
+		} else if (month==3) {
+			return "calendar.month.march";
+		} else if (month==4) {
+			return "calendar.month.april";
+		} else if (month==5) {
+			return "calendar.month.may";
+		} else if (month==6) {
+			return "calendar.month.june";
+		} else if (month==7) {
+			return "calendar.month.july";
+		} else if (month==8) {
+			return "calendar.month.august";
+		} else if (month==9) {
+			return "calendar.month.september";
+		} else if (month==10) {
+			return "calendar.month.october";
+		} else if (month==11) {
+			return "calendar.month.november";
+		} else if (month==12) {
+			return "calendar.month.december";
+		} else return String.valueOf(month);
+	}
+	
+	public String reportTypeConversion (char reportType) {
+		if (Character.compare(reportType, 'M')==0) {
+			return "delay.monthly";
+		} else if (Character.compare(reportType, 'T')==0) {
+			return "delay.quarterly";
+		} else if (Character.compare(reportType, 'Y')==0) {
+			return "delay.yearly";
+		} else return null;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		sb.append("sfdname=").append(sfdname);
+		sb.append("reportType=").append(reportType);
+		sb.append(", periodOfReport=").append(periodOfReport);
+		sb.append(", days=").append(days);
+		sb.append("}");
+		return sb.toString();
+	}
+}

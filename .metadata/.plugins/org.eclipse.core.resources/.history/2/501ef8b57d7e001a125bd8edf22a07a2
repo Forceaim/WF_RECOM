@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="Depot_de_rapport" width="1258" height="610">
+  <node name="Debut" x="443" y="12" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Depot du rapport(SFD)" x="765" y="25" width="154" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="node1" x="904" y="115" width="135" height="45">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Traitement du rapport(ARSM)" x="903" y="187" width="190" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="215" h1="3" w2="-2" h2="97"/>
+    </edge>
+  </node>
+  <node name="node2" x="620" y="241" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="node4" x="0" y="0" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Valider le rapport" x="0" y="0" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="mail-node1" x="0" y="0" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="mail-node2" x="0" y="0" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="mail-node3" x="0" y="0" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Recevoir commentaires" x="0" y="0" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="end-state1" x="0" y="0" width="132" height="36"/>
+  <node name="end-state2" x="0" y="0" width="132" height="36"/>
+  <deployment graphicalInfoFile="/DepotRapportWorkflow3/src/main/jpdl/.DepotRapport3.gpd.xml" imageFile="/DepotRapportWorkflow3/src/main/jpdl/DepotRapport3.jpg" serverName="https://192.168.2.36" serverPort="8080" serverDeployer="/OpenKM/workflow-register">
+    <classesAndResources>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/ValidateDocument.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/LockByArsmDocument.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/LockDocumentHandler.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/RefusedValidation.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/UnlockDocumentHandler.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/NodeRefusedAction.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/MessageActionHandler.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/RefusedDocumentHandler.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/MailRefused.java"/>
+    </classesAndResources>
+    <additionalFiles>
+      <element value="/DepotRapportWorkflow3/src/main/jpdl/forms.xml"/>
+    </additionalFiles>
+  </deployment>
+</root-container>

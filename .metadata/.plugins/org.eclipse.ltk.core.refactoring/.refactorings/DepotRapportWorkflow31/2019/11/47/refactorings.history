@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;DepotRapportWorkflow3/src/main/java/com/sample/action/checkoutDocument.java&apos; to &apos;LockByArsmDocument.java&apos;" description="Rename resource &apos;checkoutDocument.java&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/java/com/sample/action/checkoutDocument.java" name="LockByArsmDocument.java" stamp="1574416375997" updateReferences="true"/>
+</session>

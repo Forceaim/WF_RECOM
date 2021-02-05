@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="Depot_de_rapport" width="1304" height="417">
+  <node name="Debut" x="308" y="38" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Depot du rapport(SFD)" x="765" y="25" width="154" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="node1" x="800" y="135" width="135" height="45">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Traitement du rapport(ARSM)" x="206" y="342" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="node4" x="333" y="178" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Valider le rapport" x="0" y="0" width="132" height="36">
+    <edge>
+      <label x="14" y="-37"/>
+    </edge>
+  </node>
+  <deployment graphicalInfoFile="/DepotRapportWorkflow3/src/main/jpdl/.DepotRapport3.gpd.xml" imageFile="/DepotRapportWorkflow3/src/main/jpdl/DepotRapport3.jpg" serverName="https://192.168.2.36" serverPort="8080" serverDeployer="/OpenKM/workflow-register">
+    <classesAndResources>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/ValidateDocument.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/LockDocumentHandler.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/RefusedValidation.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/UnlockDocumentHandler.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/NodeRefusedAction.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/MessageActionHandler.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/LockByArsmDocument.java"/>
+      <element type="java" value="/DepotRapportWorkflow3/src/main/java/com/sample/action/RefusedDocumentHandler.java"/>
+    </classesAndResources>
+    <additionalFiles>
+      <element value="/DepotRapportWorkflow3/src/main/jpdl/forms.xml"/>
+    </additionalFiles>
+  </deployment>
+</root-container>

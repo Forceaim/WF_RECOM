@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition name="Depot_de_rapport">
+<variable name="applicationUrl" value="http://localhost:8080/OpenKM/index.jsp" />
+	
+	<swimlane name="initiator"></swimlane>
+	<start-state name="Debut">
+		<task swimlane="initiator"></task>
+		<transition to="Depot du rapport(SFD)"></transition>
+	</start-state>
+
+
+	<task-node name="Depot du rapport(SFD)">
+		<task name="Déposer le rapport" swimlane="initiator">
+		</task>
+		<transition to="node1" name="transmission" notify="yes">
+			<action class="com.sample.action.MessageActionHandler"></action>
+		</transition>
+	</task-node>
+
+	<node name="node1">
+		<action class="com.sample.action.LockDocumentHandler"></action>
+		<transition to="mail-node1"></transition>
+	</node>
+
+	<task-node name="Traitement du rapport(ARSM)">
+		<task name="Traiter le rapport">
+			<assignment actor-id="okmArsm"></assignment>
+		</task>
+		<transition to="node2" name="Refuser"></transition>
+		<transition to="node4" name="Valider" notify="yes"></transition>
+	</task-node>
+
+	<node name="node2">
+		<action name="refusedAction" class="com.sample.action.RefusedDocumentHandler"></action>
+		<transition to="mail-node3" notify="yes">
+			<mail actors="#{initiator}" name="NotifySfd">
+				<subject>
+					Rapport non conforme '#{taskInstance.name}'
+				</subject>
+				<text>
+					Votre rapport n'a pas été validé. Veuillez le corriger.
+					Rapport non conforme ${taskInstance.name}
+				</text>
+			</mail>
+		</transition>
+	</node>
+
+	<node name="node4">
+		<action class="com.sample.action.ValidateDocument"></action>
+		<transition to="mail-node2"></transition>
+	</node>
+	
+	<!-- <node name="node3">
+		<action class="com.sample.action.LockByArsmDocument"></action>
+		<event type="transition"></event>
+		<transition to="Valider le rapport"></transition>
+	</node>
+
+	<node name="node4">
+		<action class="com.sample.action.ValidateDocument"></action>
+		<transition to="mail-node2"></transition>
+	</node> -->
+
+	<task-node name="Valider le rapport">
+		<task name="Valider le rapport">
+			<assignment actor-id="okmSe"></assignment>
+		</task>
+		<transition to="node4" name="valider"></transition>
+	</task-node>
+
+	<mail-node name="mail-node1" actors="okmArsm">
+		<subject>
+			Nouveau rapport '#{taskInstance.name}'
+		</subject>
+		<text>
+			Un nouveau rapport a été déposé à l'url suivant : '#{applicationUrl}?uuid=#{uuid}'
+			<![CDATA[Hi,
+
+Task '#{taskInstance.name}' (related to document #{applicationUrl}?uuid=#{uuid}) has been assigned to you.
+
+Thanks.]]>
+		</text>
+		<transition to="Traitement du rapport(ARSM)"></transition>
+	</mail-node>
+
+	<mail-node name="mail-node2" actors="#{initiator}">
+		<subject>
+			Validation ARSM'#{taskInstance.name}'
+		</subject>
+		<text>
+			Document '#{applicationUrl}?uuid=#{uuid}' validé et archivée par le Département contrôle sur pièces
+		</text>
+		<transition to="end-state1"></transition>
+	</mail-node>
+
+	<mail-node name="mail-node3" actors="#{initiator}">
+		<subject>
+			Rapport refusé '#{taskInstance.name}'
+		</subject>
+		<text>
+			Votre rapport : '#{applicationUrl}?uuid=#{uuid}' a été refusé et doit être revu.
+			suivant le commentaire : '{taskInstance.comments}'
+		</text>
+		<transition to="Recevoir commentaires"></transition>
+	</mail-node>
+
+	<task-node name="Recevoir commentaires">
+		<task name="Recevoir commentaires" swimlane="initiator">	
+		</task>
+		<transition to="end-state2"></transition>
+	</task-node>
+
+
+	<end-state name="end-state1"></end-state>
+
+	<end-state name="end-state2"></end-state>
+
+
+</process-definition>
