@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="testForm">
+
+
+	<start-state name="start">
+		<task name="tasy">
+			<assignment actor-id="okmAdmin"></assignment>
+		</task>
+		<transition to="tache"></transition>
+	</start-state>
+
+
+	<task-node name="tache">
+		<task name="tache">
+			<description>
+				test desc tache
+			</description>
+			<assignment actor-id="okmAdmin"></assignment>
+		</task>
+		<transition name="toEnd" to="end"></transition>
+	</task-node>
+
+
+	<end-state name="end"></end-state>
+
+
+	<task name="taskWF">
+		<assignment actor-id="okmAdmin"></assignment>
+	</task>
+
+
+</process-definition>

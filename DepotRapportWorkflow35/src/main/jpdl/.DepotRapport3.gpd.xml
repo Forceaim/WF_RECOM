@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="Depot_de_rapport" width="1338" height="420">
+  <node name="Debut" x="182" y="15" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Depot du rapport(SFD)" x="422" y="9" width="154" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="node1" x="770" y="3" width="135" height="45">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Traitement du rapport(ARSM)" x="806" y="166" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-51" y="-2"/>
+    </edge>
+  </node>
+  <node name="node2" x="1031" y="168" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="node4" x="549" y="216" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Valider le rapport" x="364" y="143" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="mail-node1" x="793" y="97" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="mail-node2" x="291" y="215" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Recevoir commentaires" x="1182" y="285" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="end-state1" x="250" y="322" width="132" height="36"/>
+  <node name="end-state2" x="1169" y="91" width="132" height="36"/>
+  <deployment graphicalInfoFile="/DepotRapportWorkflow35/src/main/jpdl/.DepotRapport3.gpd.xml" imageFile="/DepotRapportWorkflow35/src/main/jpdl/DepotRapport3.jpdl.xml" serverName="localhost" serverPort="8080" serverDeployer="/OpenKM/workflow-register">
+    <classesAndResources>
+      <element type="java" value="/DepotRapportWorkflow35/src/main/java/com/sample/action/LockDocumentHandler.java"/>
+      <element type="java" value="/DepotRapportWorkflow35/src/main/java/com/sample/action/RefusedValidation.java"/>
+      <element type="java" value="/DepotRapportWorkflow35/src/main/java/com/sample/action/UnlockDocumentHandler.java"/>
+      <element type="java" value="/DepotRapportWorkflow35/src/main/java/com/sample/action/NodeRefusedAction.java"/>
+      <element type="java" value="/DepotRapportWorkflow35/src/main/java/com/sample/action/LockByArsmDocument.java"/>
+      <element type="java" value="/DepotRapportWorkflow35/src/main/java/com/sample/action/MessageActionHandler.java"/>
+      <element type="java" value="/DepotRapportWorkflow35/src/main/java/com/sample/action/RefusedDocumentHandler.java"/>
+      <element type="java" value="/DepotRapportWorkflow35/src/main/java/com/sample/action/ValidateDocument.java"/>
+    </classesAndResources>
+    <additionalFiles>
+      <element value="/DepotRapportWorkflow35/src/main/jpdl/forms.xml"/>
+    </additionalFiles>
+  </deployment>
+</root-container>

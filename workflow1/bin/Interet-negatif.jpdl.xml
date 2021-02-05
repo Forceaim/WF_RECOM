@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="Interet-negatif">
+
+	<task notify="true" duedate="2 business minutes" priority="highest" name="wf">
+		<assignment actor-id="okmNestor"></assignment>
+	</task>
+	
+	<start-state name="début">
+		<task duedate="2 business minutes" notify="true">
+			<assignment actor-id="okmNestor"></assignment>
+			<reminder duedate="4 business minutes" repeat="5 business secodes"></reminder>
+		</task>
+		<transition to="valider"></transition>
+	</start-state>
+
+
+	<task-node name="valider">
+		<task name="valider" duedate="2 business minutes" notify="true">
+			<assignment actor-id="okmNestor"></assignment>
+		</task>
+		<transition to="envoieMail"></transition>
+	</task-node>
+
+	<task-node name="confirmer">
+		<task name="confirmer">
+			<assignment actor-id="okmAdmin"></assignment>
+		</task>
+		<transition to="fin"></transition>
+	</task-node>
+
+	<mail-node name="envoieMail" to="ranestro@gmail.com">
+		<subject>
+			test mail
+		</subject>
+		<text>
+			content of the test mail
+		</text>
+		<transition to="confirmer"></transition>
+	</mail-node>
+
+
+	<end-state name="fin"></end-state>	
+
+
+</process-definition>

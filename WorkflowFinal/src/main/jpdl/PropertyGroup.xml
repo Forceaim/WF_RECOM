@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE property-groups SYSTEM "../../../../openkm/src/main/resources/dtd/property-groups-2.3.dtd" >
+<property-groups>
+  <property-group label="user" name="okg:users">
+  		<select label="users" name="user" className="openkm.select.ListRole" />
+  </property-group>
+</property-groups>

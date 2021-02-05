@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow-forms PUBLIC "-//OpenKM//DTD Workflow Forms 2.4//EN" "http://www.openkm.com/dtd/workflow-forms-2.4.dtd">
+<workflow-forms>
+	<workflow-form task="depot">
+		<button name="envoyer" label="Envoyer" transition="transmission"></button>
+	</workflow-form>
+	<workflow-form task="arsm">
+		<button name="conforme" label="Conforme" transition="conforme"></button>
+		<button name="non conforme" label="Non conforme" transition="nonConforme"></button>
+	</workflow-form>
+	<workflow-form task="se">
+		<button name="valider" label="Valider" transition="valider"></button>
+	</workflow-form>
+</workflow-forms>

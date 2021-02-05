@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="Interet-negatif" width="1305" height="516">
+  <node name="début" x="251" y="30" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="valider" x="76" y="88" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="confirmer" x="154" y="275" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="envoieMail" x="196" y="181" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="fin" x="301" y="384" width="132" height="36"/>
+  <deployment graphicalInfoFile="/workflow1/src/main/jpdl/.Interet-negatif.gpd.xml" imageFile="/workflow1/src/main/jpdl/Interet-negatif.jpg" serverName="localhost" serverPort="8080" serverDeployer="/OpenKM/workflow-register">
+    <additionalFiles>
+      <element value="/workflow1/src/main/jpdl/forms.xml"/>
+    </additionalFiles>
+  </deployment>
+</root-container>

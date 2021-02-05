@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="DepotRapport">
+
+
+	<start-state name="Debut">
+		<transition to="Depot du rapport"></transition>
+	</start-state>
+
+
+	<task-node name="Depot du rapport">
+		<task name="depot">
+			<assignment actor-id="okmNestor"></assignment>
+		</task>
+		<transition to="rapport transmis" name="transmission"></transition>
+	</task-node>
+
+	<state name="rapport transmis">
+		<timer duedate="30 seconds" name="transmission timer" transition="toarsm"></timer>
+		<transition to="arsm" name="toarsm"></transition>
+	</state>
+
+	<task-node name="arsm">
+		<task name="arsm">
+			<assignment actor-id="okmAdmin"></assignment>
+		</task>
+		<transition to="rapport conforme" name="conforme"></transition>
+		<transition to="rapport refuse" name="nonConforme"></transition>
+	</task-node>
+
+	<state name="rapport conforme">
+		<timer duedate="30 seconds" name="conforme timer" transition="envoi au se"></timer>
+		<transition to="se" name="envoi au se"></transition>
+	</state>
+
+	<state name="rapport refuse">
+		<timer duedate="30 seconds" name="refuse timer" transition="verifier"></timer>
+		<transition to="Depot du rapport" name="verifier"></transition>
+	</state>
+
+	<task-node name="se">
+		<task name="se">
+			<assignment actor-id="okmNestor"></assignment>
+		</task>
+		<transition to="Fin" name="valider"></transition>
+	</task-node>
+
+
+	<end-state name="Fin"></end-state>
+
+
+</process-definition>

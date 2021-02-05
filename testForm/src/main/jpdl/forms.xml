@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow-forms PUBLIC "-//OpenKM//DTD Workflow Forms 2.4//EN" "http://www.openkm.com/dtd/workflow-forms-2.4.dtd">
+<workflow-forms>
+	<!-- workflow-form task="run_config">
+		<input name="price" label="Purchase price"></input>
+		<textarea name="description" label="Purchase description"></textarea>
+		<button name="submit" label="Valider"></button>
+	</workflow-form>
+	<workflow-form task="tache">
+		<button name="ok" label="Deny" transition="toEnd"></button>
+	</workflow-form-->
+</workflow-forms>

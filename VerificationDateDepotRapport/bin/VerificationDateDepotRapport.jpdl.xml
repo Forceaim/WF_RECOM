@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="VerificationDateDepotRapport">
+
+
+	<start-state name="start">
+		<task name="startTask">
+			<assignment actor-id="okmSfd"></assignment>
+			<reminder duedate="2 business minutes"></reminder>
+		</task>
+		<transition to="uploadFile"></transition>
+	</start-state>
+
+
+	<task-node name="uploadFile">
+		<task name="Déposer le rapport">
+			<assignment actor-id="okmSfd"></assignment>
+		</task>
+		<timer duedate="2 business minutes" name="uploadTimer" transition="toMail">
+		</timer>
+		<transition to="mailToAdmin" name="toMail"></transition>
+		<transition to="end" name="to end"></transition>
+	</task-node>
+
+	<mail-node name="mailToAdmin" actors="okmAdmin">
+		<subject>
+			Date limite
+		</subject>
+		<text>
+			La date de dépôt du rapport est atteinte.
+		</text>
+		<transition to="end"></transition>
+	</mail-node>
+
+
+	<end-state name="end"></end-state>
+
+
+</process-definition>

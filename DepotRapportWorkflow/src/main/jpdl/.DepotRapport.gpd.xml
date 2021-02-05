@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="DepotRapport" width="1261" height="549">
+  <node name="Debut" x="401" y="37" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Depot du rapport" x="403" y="125" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="rapport transmis" x="403" y="222" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="arsm" x="407" y="323" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-43" y="-18"/>
+    </edge>
+  </node>
+  <node name="rapport conforme" x="241" y="400" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="rapport refuse" x="654" y="328" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="0" h1="-201" w2="251" h2="2"/>
+    </edge>
+  </node>
+  <node name="se" x="408" y="490" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Fin" x="658" y="490" width="132" height="36"/>
+  <deployment graphicalInfoFile="/DepotRapportWorkflow/src/main/jpdl/.DepotRapport.gpd.xml" imageFile="/DepotRapportWorkflow/src/main/jpdl/DepotRapport.jpg" serverName="localhost" serverPort="8080" serverDeployer="/OpenKM/workflow-register">
+    <additionalFiles>
+      <element value="/DepotRapportWorkflow/src/main/jpdl/forms.xml"/>
+    </additionalFiles>
+  </deployment>
+</root-container>

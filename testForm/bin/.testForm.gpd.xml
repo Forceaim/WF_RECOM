@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="testForm" width="1338" height="516">
+  <node name="start" x="439" y="59" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="tache" x="476" y="188" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="end" x="526" y="315" width="132" height="36"/>
+  <deployment graphicalInfoFile="/testForm/src/main/jpdl/.testForm.gpd.xml" imageFile="/testForm/src/main/jpdl/testForm.jpg" serverName="localhost" serverPort="8080" serverDeployer="/OpenKM/workflow-register"/>
+</root-container>

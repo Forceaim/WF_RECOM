@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="DepotRapport">
+
+
+	<start-state name="Début">
+		<transition to="Dépôt de rapport"></transition>
+	</start-state>
+
+	<task-node name="Dépôt de rapport">
+		<task name="deposer">
+			<assignment actor-id="okmNestor"></assignment>
+		</task>
+		<transition to="Traitement du rapport"></transition>
+	</task-node>
+	
+	<task-node name="Traitement du rapport">
+		<task name="traiter">
+			<assignment actor-id="okmAdmin"></assignment>
+		</task>
+		<transition to="estConforme"></transition>
+	</task-node>
+
+	<decision name="estConforme" expression="#{(estConforme.value&gt;1)?'nonConforme':'conforme'}">
+		<transition to="Dépôt de rapport" name="nonConforme"></transition>
+		<transition to="Doc reçu par SE" name="conforme"></transition>
+	</decision>
+
+	
+
+	<task-node name="Doc reçu par SE">
+		<task name="recevoir">
+			<assignment actor-id="okmUser1"></assignment>
+		</task>
+		<transition to="Fin"></transition>
+	</task-node>
+
+
+	<end-state name="Fin"></end-state>
+
+
+</process-definition>

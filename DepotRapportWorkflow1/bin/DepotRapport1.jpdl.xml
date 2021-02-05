@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="DepotRapport1">
+
+
+	<start-state name="Debut">
+		<task name="debut">
+			<assignment actor-id="okmSfd"></assignment>
+		</task>
+		<transition to="mailDepot"></transition>
+	</start-state>
+
+
+	<task-node name="Traitement du rapport (ARSM)">
+		<task name="Traitement du rapport (ARSM)">
+			<assignment actor-id="okmArsm"></assignment>
+		</task>
+		<transition to="Validation du rapport (SE)" name="conforme"></transition>
+		<transition to="mail refuse" name="nonConforme"></transition>
+	</task-node>
+
+	<task-node name="Validation du rapport (SE)">
+		<task name="Validation du rapport (SE)">
+			<assignment actor-id="okmSe"></assignment>
+		</task>
+		<transition to="Fin" name="valider"></transition>
+	</task-node>
+
+	<mail-node name="mail refuse" actors="okmAdmin">		
+		<subject>
+			Rapport non conforme
+		</subject>
+		<text>
+			Le rapport est non conforme
+		</text>
+		<transition to="Fin refuse" name="verifier"></transition>
+	</mail-node>
+	<mail-node name="mailDepot" actors="okmAdmin">
+		<subject>
+			Rapport déposé
+		</subject>
+		<text>
+			Le rapport est déposé
+		</text>
+		<transition to="Traitement du rapport (ARSM)" name="toarsm"></transition>
+	</mail-node>
+	
+	<end-state name="Fin"></end-state>
+	<end-state name="Fin refuse"></end-state>
+	
+</process-definition>

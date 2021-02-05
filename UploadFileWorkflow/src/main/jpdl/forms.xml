@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow-forms PUBLIC "-//OpenKM//DTD Workflow Forms 2.4//EN" "http://www.openkm.com/dtd/workflow-forms-2.4.dtd">
+<workflow-forms>
+	<workflow-form task="run_config">
+		<select label="Type de rapport" name="select" type="simple">
+	      <option value="Rapport mensuel" label="Rapport mensuel" />
+	      <option value="Rapport semetriel" label="Rapport semetriel" />
+	      <option value="Rapport annuel" label="Rapport annuel" />
+	    </select>
+	    <input label="Date limite" name="dateLimite" type="date" />
+	</workflow-form>
+	<workflow-form task="Déposer le rapport">
+		<button name="submit" label="ok" transition="to end"></button>
+	</workflow-form>
+</workflow-forms>

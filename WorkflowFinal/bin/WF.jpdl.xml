@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="Depot de rapport">
+<variable name="applicationUrl" value="http://localhost:8080/OPenKM/index.jsp" />
+
+
+	<swimlane name="initiator"></swimlane>
+	<start-state name="Debut">
+		<task swimlane="initiator"></task>
+		<transition to="Depot du rapport (SFD)"></transition>
+	</start-state>
+
+	<task-node name="Depot du rapport (SFD)">
+		<task name="Déposer le rapport" swimlane="initiator">
+		</task>
+		<transition to="node1" name="transmission" notify="yes">
+			<action class="com.sample.action.MessageActionHandler"></action>
+		</transition>
+	</task-node>
+
+	<node name="node1">
+		<action class="com.sample.action.LockDocumentHandler"></action>
+		<transition to="Traitement du rapport(ARSM)"></transition>
+	</node>
+
+	<task-node name="Traitement du rapport(ARSM)">
+		<task name="Traiter le rapport">
+			<assignment class="com.sample.Assignement.AssignArsm"></assignment>
+		</task>
+		<transition to="node2" name="Refuser"></transition>
+		<transition to="node3" name="Valider"></transition>
+	</task-node>
+
+	<node name="node2">
+		<action name="refusedAction" class="com.sample.action.RefusedDocumentHandler"></action>
+		<transition to="Recevoir commentaires"></transition>
+	</node>
+
+	<task-node name="Recevoir commentaires">
+		<task name="Recevoir commentaires" swimlane="initiator"></task>
+		<transition to="end-state2" name="Archiver"></transition>
+	</task-node>
+
+	<node name="node3">
+		<action name="ValidateAction" class="com.sample.action.ValidateDocument"></action>
+		<transition to="end-state1"></transition>
+	</node>
+
+
+	<end-state name="end-state2"></end-state>
+
+	<end-state name="end-state1"></end-state>
+
+
+</process-definition>

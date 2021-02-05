@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow-forms PUBLIC "-//OpenKM//DTD Workflow Forms 2.4//EN" "http://www.openkm.com/dtd/workflow-forms-2.4.dtd">
+<workflow-forms>	
+	<workflow-form task="Traitement du rapport (ARSM)">
+		<button name="conforme" label="Conforme" transition="conforme"></button>
+		<button name="non conforme" label="Non conforme" transition="nonConforme"></button>
+	</workflow-form>
+	<workflow-form task="Validation du rapport (SE)">
+		<button name="valider" confirmation="rapport validé" label="Valider" transition="valider"></button>
+	</workflow-form>
+</workflow-forms>

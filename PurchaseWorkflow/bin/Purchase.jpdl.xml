@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="Purchase">
+
+
+	<start-state name="start">
+		<transition to="decision"></transition>
+	</start-state>
+
+
+	<decision name="decision">
+		<transition to="approved" name="is cheap">
+			<condition expression="#{price.value &lt;= 500}"></condition>
+		</transition>
+		<transition to="manager" name="is expensive">
+			<condition expression="#{price.value &gt; 500}"></condition>
+		</transition>
+	</decision>
+
+	<state name="approved">
+		<description>
+			The purchase has been approved.
+		</description>
+		<timer duedate="30 seconds" transition="toend" name="approved timer"></timer>
+		<transition to="end" name="toend"></transition>
+	</state>
+
+	<task-node name="manager">
+		<task name="evaluate price">
+			<description>
+				The manager may deny the purchase or go ahead.
+			</description>
+			<assignment actor-id="okmAdmin"></assignment>
+		</task>
+		<transition to="denied" name="deny"></transition>
+		<transition to="approved" name="approve"></transition>
+	</task-node>
+
+	<state name="denied">
+		<timer duedate="30 seconds" name="denied timer" transition="toend"></timer>
+		<transition to="end" name="toend"></transition>
+	</state>
+
+
+	<end-state name="end"></end-state>
+
+
+</process-definition>

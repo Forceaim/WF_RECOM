@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="DepotRapport1" width="1305" height="516">
+  <node name="Debut" x="401" y="37" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Traitement du rapport (ARSM)" x="375" y="224" width="205" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-43" y="-18"/>
+    </edge>
+  </node>
+  <node name="Validation du rapport (SE)" x="197" y="321" width="175" height="36">
+    <edge>
+      <label x="-24" y="-19"/>
+    </edge>
+  </node>
+  <node name="mail refuse" x="611" y="311" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Fin" x="220" y="440" width="132" height="36"/>
+  <node name="Fin refuse" x="610" y="425" width="132" height="36"/>
+  <node name="mailDepot" x="398" y="131" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <deployment graphicalInfoFile="/DepotRapportWorkflow1/src/main/jpdl/.DepotRapport1.gpd.xml" imageFile="/DepotRapportWorkflow1/bin/DepotRapport1.jpg" serverName="localhost" serverPort="8080" serverDeployer="/OpenKM/workflow-register">
+    <additionalFiles>
+      <element value="/DepotRapportWorkflow1/src/main/jpdl/forms.xml"/>
+    </additionalFiles>
+  </deployment>
+</root-container>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="demande-cem002">
+
+
+	<start-state name="début-demande">
+		<task duedate="2 business minutes" notify="true" name="début-demande" priority="highest">
+			<assignment actor-id="okmNestor"></assignment>
+			<reminder duedate="3 business minutes" repeat="5 business minutes"></reminder>
+		</task>
+		<transition to="validation demande"></transition>
+	</start-state>
+
+
+	<task-node name="validation demande">
+		<task name="valider">
+			<assignment actor-id="okmNestor"></assignment>
+		</task>
+		<timer duedate="2 business minutes" name="reminder" repeat="10 business secondes" transition="to fampatsiahivana"></timer>
+		<transition to="verification demande"></transition>
+	</task-node>
+	
+	<task-node name="verification demande">
+		<task name="verifier">
+			<assignment actor-id="okmAdmin"></assignment>
+		</task>
+		<transition to="decider"></transition>
+	</task-node>
+	
+	<decision name="decider" /OpenKM/workflow-register/OpenKM/workflow-registerexpression="#{(valVerifier.value&gt;1)?'trConfirmer':'trMail'}">
+		<transition to="confirmer" name="trConfirmer"></transition>
+		<transition to="mail" name="trMail"></transition>
+	</decision>
+
+	<task-node name="confirmer">
+		<task name="confirmer">
+			<assignment actor-id="okmAdmin"></assignment>
+		</task>
+		<transition to="fin"></transition>
+	</task-node>
+
+	<mail-node name="mail" to="nestor-randrianasolo@gmail.com">
+		<subject>
+			demande non valide
+		</subject>
+		<text>
+			Mila averina ilay demande
+		</text>
+		<transition to="fin"></transition>
+	</mail-node>
+
+	
+
+
+	<end-state name="fin"></end-state>
+
+
+</process-definition>

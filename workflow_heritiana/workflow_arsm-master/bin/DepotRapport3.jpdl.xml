@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition name="dp27">
+
+
+	<start-state name="Debut">
+		<transition to="Depot du rapport(SFD)"></transition>
+	</start-state>
+
+
+	<task-node name="Depot du rapport(SFD)">
+		<task name="Déposer le rapport">
+			<assignment actor-id="okmSfd"></assignment>
+		</task>
+		<transition to="node1" name="transmission" notify="yes">
+			<action class="com.sample.action.MessageActionHandler"></action>
+		</transition>
+	</task-node>
+
+	<node name="node1">
+		<action class="com.sample.action.LockDocumentHandler"></action>
+		<transition to="Traitement du rapport(ARSM)">
+			<mail actors="okmArsm" name="NotifyARSM">
+				<subject>
+					New report
+				</subject>
+				<text>
+					You have a new report
+				</text>
+			</mail>
+		</transition>
+	</node>
+
+	<task-node name="Traitement du rapport(ARSM)">
+		<task name="Traiter le rapport">
+			<assignment actor-id="okmArsm"></assignment>
+		</task>
+		<transition to="node2" name="nonConforme"></transition>
+		<transition to="node3" name="conforme" notify="yes"></transition>
+	</task-node>
+
+	<node name="node2">
+		<action name="refusedAction" class="com.sample.action.RefusedDocumentHandler"></action>
+		<transition to="Depot du rapport(SFD)" notify="yes">
+			<mail actors="okmSfd" name="NotifySfd">
+				<subject>
+					Rapport non conforme
+				</subject>
+				<text>
+					Votre rapport n'a pas été validé. Veuillez le corriger.
+				</text>
+			</mail>
+		</transition>
+	</node>
+
+	<node name="node3">
+		<action class="com.sample.action.LockByArsmDocument"></action>
+		<event type="transition"></event>
+		<transition to="Valider le rapport"></transition>
+	</node>
+
+	<node name="node5">
+		<action class="com.sample.action.RefusedValidation"></action>
+		<transition to="end-state1"></transition>
+	</node>
+
+	<node name="node4">
+		<action class="com.sample.action.ValidateDocument"></action>
+		<transition to="end-state1"></transition>
+	</node>
+
+	<task-node name="Valider le rapport">
+		<task name="Valider le rapport">
+			<assignment actor-id="okmSe"></assignment>
+		</task>
+		<transition to="node5" name="refuser"></transition>
+		<transition to="node4" name="valider"></transition>
+	</task-node>
+
+
+	<end-state name="end-state1"></end-state>
+
+
+</process-definition>
