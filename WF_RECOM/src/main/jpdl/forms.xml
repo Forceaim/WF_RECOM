@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE workflow-forms PUBLIC "-//OpenKM//DTD Workflow Forms 2.6//EN" "http://www.openkm.com/dtd/workflow-forms-2.6.dtd">
+<workflow-forms>
+	<workflow-form task="Envoi de document">
+		<select label="Recommander à" name="user" type="simple" className="com.openkm.select.values.ListRole"/>
+		<button name="envoyer" label="Envoyer" transition="Réception Document (SFD)"></button>
+	</workflow-form>
+	
+	<workflow-form task="Accusé réception">
+		<button name="Signaler" label="Signaler" transition="signaler"></button>
+		<!-- <button name="refuser" label="Refuser" transition="refuser"></button> -->
+	</workflow-form>
+	
+</workflow-forms>
+ 

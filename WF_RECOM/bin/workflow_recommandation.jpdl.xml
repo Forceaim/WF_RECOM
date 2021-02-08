@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="workflow_recommandation">
+
+<swimlane name="initiator"></swimlane>
+	<start-state name="Début">
+	<task swimlane="initiator"></task>
+		<transition to="Envoi document (ARSM)"></transition>
+	</start-state>
+
+
+	<task-node name="Envoi document (ARSM)">
+	<task name="Envoi de document">
+		<assignment class="com.sample.action.AssignSomeone"></assignment>
+	</task>
+		<transition to="Réception Document (SFD)" name="Réception Document (SFD)">
+			<action class="com.sample.action.SendDocHandler"></action>
+		</transition>
+	</task-node>
+
+	<node name="Réception Document (SFD)">
+		<action name="Accusé réception" class="com.sample.action.NotifierHandler"></action>
+		<transition to="Fin" name="signaler"></transition>
+	</node>
+
+
+	<end-state name="Fin"></end-state>
+
+
+</process-definition>

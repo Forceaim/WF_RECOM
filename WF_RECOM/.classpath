@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/config"/>
+	<classpathentry kind="src" path="src/main/jpdl"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="JBPM/Jboss-jBP-M"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/openkm"/>
+	<classpathentry kind="lib" path="/home/openkm/Downloads/javax + activation/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="/home/openkm/Downloads/javax + activation/javax.mail-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/home/openkm/Downloads/jbpm-jpdl-3.3.1/jbpm-jpdl-3.3.1.jar"/>
+	<classpathentry kind="lib" path="/home/openkm/Desktop/OpenKM/WEB-INF/lib/slf4j-api-1.7.7.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
