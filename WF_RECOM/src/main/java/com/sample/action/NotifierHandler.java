@@ -74,7 +74,7 @@ public class NotifierHandler implements ActionHandler {
 		
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("<h2><Rapport en retard :</h2><br><div>Accusé de réception du document").append(docName).append(" à été envoyé.");
+		sb.append("<h2><Réception de document :</h2><br><div>Accusé de réception du document").append(docName).append(" à été envoyé.");
 		String corpse = sb.toString();
 		log.info(corpse);
 		//String recipients = AuthDAO.getMailWithName(author);
@@ -84,7 +84,7 @@ public class NotifierHandler implements ActionHandler {
 		try{
 			
 			MailUtils.sendMessage(recipients, subject , corpse);
-			log.info("tokony lasa any aminy antsa");
+			log.info("tokony lasa any an");
 		}catch(Exception e){
 			 throw new Exception(e.getMessage(), e);
 		}	
